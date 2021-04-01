@@ -101,6 +101,14 @@ lift = liftA
 lift2 :: (Monoid es) => (a -> b -> c) -> (CollectErrors es a) -> (CollectErrors es b) -> (CollectErrors es c)
 lift2 = liftA2
 
+lift1T :: (Monoid es) => (a -> b -> c) -> (CollectErrors es a) -> b -> (CollectErrors es c)
+lift1T fn (CollectErrors (Just a) ae) b = CollectErrors (Just (fn a b)) ae
+lift1T fn (CollectErrors _ ae) _ = CollectErrors Nothing ae
+
+liftT1 :: (Monoid es) => (a -> b -> c) -> a -> (CollectErrors es b) -> (CollectErrors es c)
+liftT1 fn a (CollectErrors (Just b) be) = CollectErrors (Just (fn a b)) be
+liftT1 fn _ (CollectErrors _ be) = CollectErrors Nothing be
+
 instance (Monoid es) => Monad (CollectErrors es) where
   ae >>= f =
     case ae of

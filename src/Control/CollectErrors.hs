@@ -12,6 +12,8 @@ module Control.CollectErrors
 , filterValuesWithoutError
 , lift
 , lift2
+, lift1T
+, liftT1
 )
 where
 
