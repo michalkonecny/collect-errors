@@ -63,14 +63,23 @@ prependErrors :: (Monoid es) => es -> CollectErrors es v -> CollectErrors es v
 prependErrors es1 (CollectErrors mv es2) = CollectErrors mv (es1 <> es2)
 
 {-| A safe way to get a value out of the CollectErrors wrapper. -}
-getValueIfNoError ::
+toEither ::
   (CanBeErrors es)
   =>
   CollectErrors es v -> Either es v
-getValueIfNoError (CollectErrors mv es) =
+toEither (CollectErrors mv es) =
   case mv of
     Just v | es == mempty -> Right v
     _ -> Left es
+
+withErrorOrValue :: 
+  (CanBeErrors es)
+  =>
+  (es -> t) -> (v -> t) -> CollectErrors es v -> t
+withErrorOrValue onError onValue (CollectErrors mv es) =
+  case mv of
+    Just v | es == mempty -> onValue v
+    _ -> onError es
 
 filterValuesWithoutError ::
   (CanBeErrors es)
@@ -78,7 +87,7 @@ filterValuesWithoutError ::
   [CollectErrors es v] -> [v]
 filterValuesWithoutError [] = []
 filterValuesWithoutError (vCE : rest) =
-  either (const restDone) (: restDone) (getValueIfNoError vCE)
+  withErrorOrValue (const restDone) (: restDone) vCE
   where
   restDone = filterValuesWithoutError rest
 

@@ -7,7 +7,8 @@ module Numeric.CollectErrors
   -- ** Applicable general collect-error utilities
 , noValue
 , prependErrors
-, getValueIfNoError
+, toEither
+, withErrorOrValue
 , filterValuesWithoutError
 , lift
 , lift2
