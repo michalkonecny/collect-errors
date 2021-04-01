@@ -4,9 +4,7 @@ module Numeric.CollectErrors.PreludeInstances where
 
 import Prelude
 
-import Control.Applicative ( Applicative(liftA2), liftA )
-
-import Control.CollectErrors ( CollectErrors(CollectErrors) )
+import Control.CollectErrors ( CollectErrors(CollectErrors), lift, lift2 )
 import Control.CollectErrors.PreludeInstances ( liftGotValue )
 import Numeric.CollectErrors.Type
 
@@ -30,21 +28,21 @@ instance (Integral v, Ord v, Show v) => Integral (CN v) where
 
 instance (Floating v, Ord v, Show v) => Floating (CN v) where
   pi = pure pi
-  exp = liftA exp
+  exp = lift exp
   log = liftAcheckPositive "log" log
   sqrt = liftAcheckNonnegative "sqrt" sqrt
-  (**) = liftA2 (**) -- TODO: domain check
-  logBase = liftA2 logBase -- TODO: domain check
-  sin = liftA sin
-  cos = liftA cos
+  (**) = lift2 (**) -- TODO: domain check
+  logBase = lift2 logBase -- TODO: domain check
+  sin = lift sin
+  cos = lift cos
   asin = liftAcheckPlusMinusOne "asin" asin
   acos = liftAcheckPlusMinusOne "acos" acos
-  atan = liftA atan
-  sinh = liftA sinh
-  cosh = liftA cosh
-  asinh = liftA asinh
-  acosh = liftA acosh
-  atanh = liftA atanh
+  atan = lift atan
+  sinh = lift sinh
+  cosh = lift cosh
+  asinh = lift asinh
+  acosh = lift acosh
+  atanh = lift atanh
 
 liftAcheck :: 
   (a -> Bool) -> 
@@ -52,7 +50,7 @@ liftAcheck ::
   (a -> v) -> CN a -> CN v
 liftAcheck check err op aCN@(CollectErrors (Just a) _)
   | check a = noValueNumErrorCertain (err a)
-liftAcheck _ _ op aCN = liftA op aCN
+liftAcheck _ _ op aCN = lift op aCN
 
 liftAcheckPositive :: (Ord a, Num a, Show a) => String -> (a -> v) -> CN a -> CN v
 liftAcheckPositive fnName =
@@ -73,4 +71,4 @@ liftA2checkB ::
   CN a -> CN b -> CN v
 liftA2checkB checkB errB op a bCN@(CollectErrors (Just b) _)
   | checkB b = noValueNumErrorCertain (errB b)
-liftA2checkB _ _ op a bCN = liftA2 op a bCN
+liftA2checkB _ _ op a bCN = lift2 op a bCN

@@ -2,12 +2,10 @@ module Control.CollectErrors.PreludeInstances where
 
 import Prelude
 
-import Control.Applicative ( Applicative(liftA2), liftA )
-
 import Text.Printf ( printf )
 
 import Control.CollectErrors.Type
-    ( CollectErrors(CollectErrors), CanBeErrors )
+    ( CollectErrors(CollectErrors), CanBeErrors, lift, lift2 )
 
 
 instance (CanBeErrors es, Eq v) => Eq (CollectErrors es v) where
@@ -19,8 +17,8 @@ instance (CanBeErrors es, Ord v) => Ord (CollectErrors es v) where
   (<=) = liftGotValues2 "(<=)" (<=)
   (>) = liftGotValues2 "(>)" (>)
   (>=) = liftGotValues2 "(>=)" (>=)
-  max = liftA2 max
-  min = liftA2 min
+  max = lift2 max
+  min = lift2 min
 
 instance (CanBeErrors es, Bounded v) => Bounded (CollectErrors es v) where
   minBound = pure minBound
@@ -32,12 +30,12 @@ instance (CanBeErrors es, Enum v) => Enum (CollectErrors es v) where
 
 instance (CanBeErrors es, Num v) => Num (CollectErrors es v) where
   fromInteger = pure . fromInteger
-  (+) = liftA2 (+)
-  (-) = liftA2 (-)
-  (*) = liftA2 (*)
-  abs = liftA abs
-  negate = liftA negate
-  signum = liftA signum
+  (+) = lift2 (+)
+  (-) = lift2 (-)
+  (*) = lift2 (*)
+  abs = lift abs
+  negate = lift negate
+  signum = lift signum
 
 instance (CanBeErrors es, Real v) => Real (CollectErrors es v) where
   toRational = liftGotValue "toRational" toRational

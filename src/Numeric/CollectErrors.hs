@@ -5,10 +5,12 @@ module Numeric.CollectErrors
   -- * Utilities
 , noValueNumErrorCertain, noValueNumErrorPotential
   -- ** Applicable general collect-error utilities
-, hasCertainError
-, hasError
 , noValue
-, getMaybeValue, getErrors, prependErrors
+, prependErrors
+, getValueIfNoError
+, filterValuesWithoutError
+, lift
+, lift2
 )
 where
 

@@ -3,12 +3,14 @@ module Control.CollectErrors.Type where
 
 import Prelude
 
-import Text.Printf ( printf )
+import Control.Applicative ( Applicative(liftA2), liftA )
 
 import Data.Monoid ( (<>), Monoid(mempty) )
 import Data.Maybe (fromJust)
 
 import Test.QuickCheck ( Arbitrary(arbitrary) )
+
+import Text.Printf ( printf )
 
 {-|
   A wrapper around values which can accommodate a list of
@@ -92,6 +94,12 @@ instance (Monoid es) => Applicative (CollectErrors es) where
     CollectErrors (Just (a b)) (ae <> be)
   (CollectErrors _ ae) <*> (CollectErrors _ be) =
     CollectErrors Nothing (ae <> be)
+
+lift :: (Monoid es) => (a -> b) -> (CollectErrors es a) -> (CollectErrors es b)
+lift = liftA
+
+lift2 :: (Monoid es) => (a -> b -> c) -> (CollectErrors es a) -> (CollectErrors es b) -> (CollectErrors es c)
+lift2 = liftA2
 
 instance (Monoid es) => Monad (CollectErrors es) where
   ae >>= f =

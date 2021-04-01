@@ -8,8 +8,10 @@ module Control.CollectErrors
 -- ** Utilities
 , noValue
 , prependErrors
-, filterValuesWithoutError
 , getValueIfNoError
+, filterValuesWithoutError
+, lift
+, lift2
 )
 where
 
