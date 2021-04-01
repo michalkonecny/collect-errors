@@ -1,0 +1,45 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 5ba605ae02bcec60b6473bc3355f7eced1723d9d1829b710005b812c029bf58b
+
+name:           collect-errors
+version:        0.1.0.0
+synopsis:       Error monad with a Float instance
+description:    Please see the README on GitHub at <https://github.com/michalkonecny/collect-errors#readme>
+category:       Math
+homepage:       https://github.com/michalkonecny/collect-errors#readme
+bug-reports:    https://github.com/michalkonecny/collect-errors/issues
+author:         Michal Konecny
+maintainer:     mikkonecny@gmail.com
+copyright:      2021 Michal Konecny
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/michalkonecny/collect-errors
+
+library
+  exposed-modules:
+      Control.CollectErrors
+      Control.CollectErrors.PreludeInstances
+      Control.CollectErrors.Type
+      Numeric.CollectErrors
+      Numeric.CollectErrors.PreludeInstances
+      Numeric.CollectErrors.Type
+  other-modules:
+      Paths_collect_errors
+  hs-source-dirs:
+      src
+  build-depends:
+      QuickCheck >=2.7
+    , base >=4.7 && <5
+  default-language: Haskell2010

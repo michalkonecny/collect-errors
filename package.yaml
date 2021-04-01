@@ -1,0 +1,38 @@
+name:                collect-errors
+version:             0.1.0.0
+github:              "michalkonecny/collect-errors"
+license:             BSD3
+author:              "Michal Konecny"
+maintainer:          "mikkonecny@gmail.com"
+copyright:           "2021 Michal Konecny"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+synopsis:            Error monad with a Float instance
+category:            Math
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/michalkonecny/collect-errors#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- QuickCheck >= 2.7
+
+library:
+  source-dirs: src
+
+# tests:
+#   error-wrapper-test:
+#     main:                Spec.hs
+#     source-dirs:         test
+#     ghc-options:
+#     - -threaded
+#     - -rtsopts
+#     - -with-rtsopts=-N
+#     dependencies:
+#     - error-wrapper
