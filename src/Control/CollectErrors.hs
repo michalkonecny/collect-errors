@@ -15,6 +15,9 @@ module Control.CollectErrors
 , lift2
 , lift1T
 , liftT1
+, lift2pair
+, lift1Tpair
+, liftT1pair
 )
 where
 

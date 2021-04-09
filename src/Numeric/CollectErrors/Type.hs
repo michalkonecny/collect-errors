@@ -5,7 +5,7 @@ module Numeric.CollectErrors.Type
 where
 
 import Control.CollectErrors
-    ( CanTestErrorsCertain(..), CollectErrors, noValue )
+    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors )
 
 cn :: v -> CN v
 cn = pure
@@ -41,3 +41,9 @@ noValueNumErrorCertain e = noValue [(e, ErrorCertain)]
 {-| Construct an empty wrapper indicating that given error may have occurred. -}
 noValueNumErrorPotential :: NumError -> CN v
 noValueNumErrorPotential e = noValue [(e, ErrorPotential)]
+
+prependErrorCertain :: NumError -> CN t -> CN t
+prependErrorCertain e = prependErrors [ (e, ErrorCertain) ] 
+  
+prependErrorPotential :: NumError -> CN t -> CN t
+prependErrorPotential e = prependErrors [ (e, ErrorPotential) ] 

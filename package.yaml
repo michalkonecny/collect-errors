@@ -25,6 +25,8 @@ dependencies:
 
 library:
   source-dirs: src
+  ghc-options:
+  - -Wall
 
 # tests:
 #   error-wrapper-test:
@@ -35,4 +37,4 @@ library:
 #     - -rtsopts
 #     - -with-rtsopts=-N
 #     dependencies:
-#     - error-wrapper
+#     - collect-errors
