@@ -9,6 +9,8 @@ module Numeric.CollectErrors
 , prependErrors
 , prependErrorCertain
 , prependErrorPotential
+, CanTestErrorsCertain(..)
+, CanTestErrorsPresent(..)
 , toEither
 , withErrorOrValue
 , filterValuesWithoutError
