@@ -13,6 +13,7 @@ module Control.CollectErrors
 , filterValuesWithoutError
 , lift
 , liftCE
+, liftPair
 , lift2
 , lift2CE
 , lift1T

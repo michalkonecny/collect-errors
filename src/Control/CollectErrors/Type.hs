@@ -110,6 +110,14 @@ liftCE f (CollectErrors (Just a) ae) =
 liftCE _ (CollectErrors _ ae) =
     CollectErrors Nothing ae
 
+liftPair :: (Monoid es) => (a -> (c,d)) -> (CollectErrors es a) -> (CollectErrors es c, CollectErrors es d)
+liftPair f (CollectErrors (Just a) ae) = 
+  (CollectErrors (Just c) ae, CollectErrors (Just d) ae)
+  where
+  (c,d) = f a
+liftPair _ (CollectErrors _ ae) = 
+  (CollectErrors Nothing ae, CollectErrors Nothing ae)
+
 lift2 :: (Monoid es) => (a -> b -> c) -> (CollectErrors es a) -> (CollectErrors es b) -> (CollectErrors es c)
 lift2 = liftA2
 

@@ -16,6 +16,7 @@ module Numeric.CollectErrors
 , filterValuesWithoutError
 , lift
 , liftCN
+, liftPair
 , lift2
 , lift2CN
 , lift1T
