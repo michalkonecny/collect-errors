@@ -5,7 +5,7 @@ module Numeric.CollectErrors.Type
 where
 
 import Control.CollectErrors
-    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors )
+    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE )
 
 cn :: v -> CN v
 cn = pure
@@ -47,3 +47,9 @@ prependErrorCertain e = prependErrors [ (e, ErrorCertain) ]
   
 prependErrorPotential :: NumError -> CN t -> CN t
 prependErrorPotential e = prependErrors [ (e, ErrorPotential) ] 
+
+liftCN  :: (a -> (CN c)) -> (CN a) -> (CN c)
+liftCN = liftCE
+
+lift2CN  :: (a -> b -> (CN c)) -> (CN a) -> (CN b) -> (CN c)
+lift2CN = lift2CE

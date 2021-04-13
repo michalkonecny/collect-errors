@@ -12,7 +12,9 @@ module Control.CollectErrors
 , withErrorOrValue
 , filterValuesWithoutError
 , lift
+, liftCE
 , lift2
+, lift2CE
 , lift1T
 , liftT1
 , lift2pair
@@ -20,15 +22,6 @@ module Control.CollectErrors
 , liftT1pair
 )
 where
-
-import Prelude
-
-import Text.Printf ( printf )
-
-import Data.Monoid ( (<>), Monoid(mempty) )
-import Data.Maybe (fromJust)
-
-import Test.QuickCheck ( Arbitrary(arbitrary) )
 
 import Control.CollectErrors.Type
 import Control.CollectErrors.PreludeInstances ()

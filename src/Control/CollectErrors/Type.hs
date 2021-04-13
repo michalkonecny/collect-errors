@@ -104,8 +104,20 @@ instance (Monoid es) => Applicative (CollectErrors es) where
 lift :: (Monoid es) => (a -> b) -> (CollectErrors es a) -> (CollectErrors es b)
 lift = liftA
 
+liftCE :: (Monoid es) => (a -> (CollectErrors es c)) -> (CollectErrors es a) -> (CollectErrors es c)
+liftCE f (CollectErrors (Just a) ae) =
+  prependErrors ae $ f a
+liftCE _ (CollectErrors _ ae) =
+    CollectErrors Nothing ae
+
 lift2 :: (Monoid es) => (a -> b -> c) -> (CollectErrors es a) -> (CollectErrors es b) -> (CollectErrors es c)
 lift2 = liftA2
+
+lift2CE :: (Monoid es) => (a -> b -> (CollectErrors es c)) -> (CollectErrors es a) -> (CollectErrors es b) -> (CollectErrors es c)
+lift2CE f (CollectErrors (Just a) ae) (CollectErrors (Just b) be) =
+  prependErrors (ae <> be) $ f a b
+lift2CE _ (CollectErrors _ ae) (CollectErrors _ be) =
+    CollectErrors Nothing (ae <> be)
 
 lift1T :: (Monoid es) => (a -> b -> c) -> (CollectErrors es a) -> b -> (CollectErrors es c)
 lift1T fn (CollectErrors (Just a) ae) b = CollectErrors (Just (fn a b)) ae
