@@ -21,6 +21,8 @@ module Numeric.CollectErrors
 , lift2CN
 , lift1T
 , liftT1
+, lift1TCN
+, liftT1CN
 , lift2pair
 , lift1Tpair
 , liftT1pair

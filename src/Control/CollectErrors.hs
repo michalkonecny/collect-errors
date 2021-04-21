@@ -18,6 +18,8 @@ module Control.CollectErrors
 , lift2CE
 , lift1T
 , liftT1
+, lift1TCE
+, liftT1CE
 , lift2pair
 , lift1Tpair
 , liftT1pair

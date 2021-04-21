@@ -5,7 +5,7 @@ module Numeric.CollectErrors.Type
 where
 
 import Control.CollectErrors
-    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE )
+    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE )
 
 cn :: v -> CN v
 cn = pure
@@ -53,3 +53,8 @@ liftCN = liftCE
 
 lift2CN  :: (a -> b -> (CN c)) -> (CN a) -> (CN b) -> (CN c)
 lift2CN = lift2CE
+
+lift1TCN  :: (a -> b -> (CN c)) -> (CN a) -> b -> (CN c)
+lift1TCN = lift1TCE
+liftT1CN  :: (a -> b -> (CN c)) -> a -> (CN b) -> (CN c)
+liftT1CN = liftT1CE

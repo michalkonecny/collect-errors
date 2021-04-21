@@ -131,9 +131,17 @@ lift1T :: (Monoid es) => (a -> b -> c) -> (CollectErrors es a) -> b -> (CollectE
 lift1T fn (CollectErrors (Just a) ae) b = CollectErrors (Just (fn a b)) ae
 lift1T _ (CollectErrors _ ae) _ = CollectErrors Nothing ae
 
+lift1TCE :: (Monoid es) => (a -> b -> (CollectErrors es c)) -> (CollectErrors es a) -> b -> (CollectErrors es c)
+lift1TCE fn (CollectErrors (Just a) ae) b = prependErrors ae $ fn a b
+lift1TCE _ (CollectErrors _ ae) _ = CollectErrors Nothing ae
+
 liftT1 :: (Monoid es) => (a -> b -> c) -> a -> (CollectErrors es b) -> (CollectErrors es c)
 liftT1 fn a (CollectErrors (Just b) be) = CollectErrors (Just (fn a b)) be
 liftT1 _ _ (CollectErrors _ be) = CollectErrors Nothing be
+
+liftT1CE :: (Monoid es) => (a -> b -> (CollectErrors es c)) -> a -> (CollectErrors es b) -> (CollectErrors es c)
+liftT1CE fn a (CollectErrors (Just b) be) = prependErrors be $ fn a b
+liftT1CE _ _ (CollectErrors _ be) = CollectErrors Nothing be
 
 lift2pair :: (Monoid es) => (a -> b -> (c,d)) -> (CollectErrors es a) -> (CollectErrors es b) -> (CollectErrors es c, CollectErrors es d)
 lift2pair f (CollectErrors (Just a) ae) (CollectErrors (Just b) be) = 
