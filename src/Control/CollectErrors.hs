@@ -8,6 +8,8 @@ module Control.CollectErrors
 -- ** Utilities
 , noValue
 , prependErrors
+, unCollectErrors
+, (~!)
 , toEither
 , withErrorOrValue
 , filterValuesWithoutError

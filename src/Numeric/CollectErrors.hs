@@ -1,7 +1,7 @@
 module Numeric.CollectErrors
 (
   -- * Type of numeric errors
-  NumError(..), ErrorCertaintyLevel(..), NumErrors, CN, cn
+  NumError(..), ErrorCertaintyLevel(..), NumErrors, CN, cn, unCN, (~!)
   -- * Utilities
 , noValueNumErrorCertain, noValueNumErrorPotential
   -- ** Applicable general collect-error utilities

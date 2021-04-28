@@ -5,10 +5,13 @@ module Numeric.CollectErrors.Type
 where
 
 import Control.CollectErrors
-    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE )
+    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors )
 
 cn :: v -> CN v
 cn = pure
+
+unCN :: CN p -> p
+unCN = unCollectErrors
 
 type CN = CollectErrors NumErrors
 type NumErrors = [NumErrorLevel]

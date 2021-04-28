@@ -59,6 +59,15 @@ noValue es = CollectErrors Nothing es
 prependErrors :: (Monoid es) => es -> CollectErrors es v -> CollectErrors es v
 prependErrors es1 (CollectErrors mv es2) = CollectErrors mv (es1 <> es2)
 
+{-| Unsafe way to get a value out of the CollectErrors wrapper. -}
+unCollectErrors :: Show es => CollectErrors es p -> p
+unCollectErrors (CollectErrors (Just v) _) = v
+unCollectErrors (CollectErrors _ es) = error $ "CollectErrors: " ++ show es
+
+{-| Unsafe way to get a value out of the CollectErrors wrapper. -}
+(~!) :: Show es => CollectErrors es p -> p
+(~!) = unCollectErrors
+
 {-| A safe way to get a value out of the CollectErrors wrapper. -}
 toEither ::
   (CanBeErrors es)
@@ -87,6 +96,8 @@ filterValuesWithoutError (vCE : rest) =
   withErrorOrValue (const restDone) (: restDone) vCE
   where
   restDone = filterValuesWithoutError rest
+
+
 
 -- functor instances:
 
