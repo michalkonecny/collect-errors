@@ -30,6 +30,6 @@ Dealing with the errors can be moved outside the expression:
     *Numeric.CollectErrors> toEither $ 1/a+(sqrt a)
     Right 2.0
 
-The `CN` wrapper has support for **potential errors** so that it can be applied to a set arithmetic such as interval arithmetic.
+The `CN` wrapper has support for **potential errors** so that it can be applied to a set arithmetic such as **interval arithmetic**.
 
-The `Floating` instance cannot be used with a set arithmetic since the instance relies on true/false comparisons but a set arithmetic has only three-valued (true/false/undecided) comparisons. The `mixed-types-num` package provides alternative numerical type classes in which three-valued (ie Kleenean) comparisons are available.
+The `Floating` instance cannot be used with a set arithmetic since the instance relies on true/false comparisons but a set arithmetic has only **three-valued (true/false/undecided) comparisons**. Package [mixed-types-num](https://hackage.haskell.org/package/mixed-types-num) provides alternative numerical type classes in which three-valued (ie Kleenean) comparisons are available.
