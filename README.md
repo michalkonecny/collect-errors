@@ -6,7 +6,7 @@ of a value.  A value may be missing, leaving only the error(s).
 
 The wrapper `CN t` is a special case of `CollectErrors es t` with `es` = `NumErrors`.
 
-The `CN` monad also propagates instances of `Floating`,
+The `CN` wrapper also propagates instances of `Floating`,
 allowing us to write expressions with partial
 functions (ie functions that fail for some inputs) instead of
 branching after each application of such function:
@@ -30,10 +30,6 @@ Dealing with the errors can be moved outside the expression:
     *Numeric.CollectErrors> toEither $ 1/a+(sqrt a)
     Right 2.0
 
-If the error data contain enough information, their list can be used to trace the source of the errors.
+The `CN` wrapper has support for **potential errors** so that it can be applied to a set arithmetic such as interval arithmetic.
 
-The `CN` monad has support for **potential errors** so that it can be applied to a set arithmetic such as interval arithmetic.
-
-The `Floating` instance cannot be used with a set arithmetic since the instance relies on true/false comparisons but a set arithmetic has only three-valued (true/false/undecided) comparisons.
-
-The `mixed-types-num` package provides alternative numerical type classes in which this is possible.
+The `Floating` instance cannot be used with a set arithmetic since the instance relies on true/false comparisons but a set arithmetic has only three-valued (true/false/undecided) comparisons. The `mixed-types-num` package provides alternative numerical type classes in which three-valued (ie Kleenean) comparisons are available.
