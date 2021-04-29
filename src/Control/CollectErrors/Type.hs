@@ -5,6 +5,8 @@ import Prelude
 
 import Control.Applicative ( Applicative(liftA2), liftA )
 
+import qualified Data.Set as Set
+
 import Test.QuickCheck ( Arbitrary(arbitrary) )
 
 import Text.Printf ( printf )
@@ -35,6 +37,9 @@ instance (CanTestErrorsCertain es) => CanTestErrorsCertain (CollectErrors es v) 
 instance (CanTestErrorsCertain es) => CanTestErrorsCertain [es] where
   hasCertainError = or . map hasCertainError
 
+instance (CanTestErrorsCertain es) => CanTestErrorsCertain (Set.Set es) where
+  hasCertainError = or . map hasCertainError . Set.toList
+
 class CanTestErrorsPresent es where
   hasError :: es -> Bool
 
@@ -42,6 +47,9 @@ instance (CanTestErrorsPresent es) => CanTestErrorsPresent (CollectErrors es v) 
   hasError (CollectErrors _ es) = hasError es
 
 instance CanTestErrorsPresent [es] where
+  hasError = not . null
+
+instance CanTestErrorsPresent (Set.Set es) where
   hasError = not . null
 
 type CanBeErrors es = (Monoid es, Eq es, Show es, CanTestErrorsCertain es, CanTestErrorsPresent es)

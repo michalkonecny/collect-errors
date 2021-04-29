@@ -4,6 +4,8 @@ module Numeric.CollectErrors.Type
 
 where
 
+import qualified Data.Set as Set
+
 import Control.CollectErrors
     ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors )
 
@@ -14,12 +16,12 @@ unCN :: CN p -> p
 unCN = unCollectErrors
 
 type CN = CollectErrors NumErrors
-type NumErrors = [NumErrorLevel]
+type NumErrors = Set.Set NumErrorLevel
 type NumErrorLevel = (NumError, ErrorCertaintyLevel)
 
 data NumError =
     DivByZero | OutOfDomain String | NumError String
-    deriving (Eq)
+    deriving (Eq, Ord)
 
 instance Show NumError where
   show DivByZero = "division by 0"
@@ -28,7 +30,7 @@ instance Show NumError where
 
 data ErrorCertaintyLevel =
   ErrorCertain | ErrorPotential
-  deriving (Eq)
+  deriving (Eq, Ord)
 
 instance Show ErrorCertaintyLevel where
   show ErrorCertain = "ERROR"
@@ -39,17 +41,17 @@ instance CanTestErrorsCertain NumErrorLevel where
 
 {-| Construct an empty wrapper indicating that given error has certainly occurred. -}
 noValueNumErrorCertain :: NumError -> CN v
-noValueNumErrorCertain e = noValue [(e, ErrorCertain)]
+noValueNumErrorCertain e = noValue $ Set.singleton (e, ErrorCertain)
 
 {-| Construct an empty wrapper indicating that given error may have occurred. -}
 noValueNumErrorPotential :: NumError -> CN v
-noValueNumErrorPotential e = noValue [(e, ErrorPotential)]
+noValueNumErrorPotential e = noValue $ Set.singleton (e, ErrorPotential)
 
 prependErrorCertain :: NumError -> CN t -> CN t
-prependErrorCertain e = prependErrors [ (e, ErrorCertain) ] 
+prependErrorCertain e = prependErrors $ Set.singleton (e, ErrorCertain)
   
 prependErrorPotential :: NumError -> CN t -> CN t
-prependErrorPotential e = prependErrors [ (e, ErrorPotential) ] 
+prependErrorPotential e = prependErrors $ Set.singleton (e, ErrorPotential)
 
 liftCN  :: (a -> (CN c)) -> (CN a) -> (CN c)
 liftCN = liftCE
