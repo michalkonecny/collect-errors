@@ -13,7 +13,7 @@ branching after each application of such function:
 
     *Numeric.CollectErrors> a = 1 :: CN Double
     *Numeric.CollectErrors> (1/(a-1))+(sqrt (a-2))
-    {[(division by 0,ERROR),(out of domain: sqrt for negative arg -1.0,ERROR)]}
+    {{ERROR: division by 0; ERROR: out of domain: sqrt for negative arg -1.0}}
 
 as opposed to:
 
@@ -24,14 +24,16 @@ as opposed to:
 Dealing with the errors can be moved outside the expression:
 
     *Numeric.CollectErrors> a = 1 :: CN Double
-    *Numeric.CollectErrors> getValueIfNoError $ 1/(a-1)
-    Left [(division by 0,ERROR)]
+    *Numeric.CollectErrors> toEither $ 1/(a-1)
+    Left {ERROR: division by 0}
 
-    *Numeric.CollectErrors> getValueIfNoError $ 1/a+(sqrt a)
+    *Numeric.CollectErrors> toEither $ 1/a+(sqrt a)
     Right 2.0
 
 If the error data contain enough information, their list can be used to trace the source of the errors.
 
 The `CN` monad has support for **potential errors** so that it can be applied to a set arithmetic such as interval arithmetic.
+
 The `Floating` instance cannot be used with a set arithmetic since the instance relies on true/false comparisons but a set arithmetic has only three-valued (true/false/undecided) comparisons.
+
 The `mixed-types-num` package provides alternative numerical type classes in which this is possible.

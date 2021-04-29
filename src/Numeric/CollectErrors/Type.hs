@@ -1,13 +1,15 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module Numeric.CollectErrors.Type 
 
 where
 
+import qualified Data.List as List
 import qualified Data.Set as Set
 
 import Control.CollectErrors
-    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors )
+    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors, CanTestErrorsPresent )
 
 cn :: v -> CN v
 cn = pure
@@ -16,8 +18,16 @@ unCN :: CN p -> p
 unCN = unCollectErrors
 
 type CN = CollectErrors NumErrors
-type NumErrors = Set.Set NumErrorLevel
+newtype NumErrors = NumErrors (Set.Set NumErrorLevel)
+  deriving (Eq,Semigroup, Monoid, CanTestErrorsCertain, CanTestErrorsPresent)
 type NumErrorLevel = (NumError, ErrorCertaintyLevel)
+
+instance Show NumErrors where
+  show (NumErrors set) =
+    "{" <> (List.intercalate "; " $ map showEL $ Set.toList set)  <>  "}"
+    where
+    showEL (e,l) =
+      show l <> ": " <> show e
 
 data NumError =
     DivByZero | OutOfDomain String | NumError String
@@ -41,17 +51,17 @@ instance CanTestErrorsCertain NumErrorLevel where
 
 {-| Construct an empty wrapper indicating that given error has certainly occurred. -}
 noValueNumErrorCertain :: NumError -> CN v
-noValueNumErrorCertain e = noValue $ Set.singleton (e, ErrorCertain)
+noValueNumErrorCertain e = noValue $ NumErrors $ Set.singleton (e, ErrorCertain)
 
 {-| Construct an empty wrapper indicating that given error may have occurred. -}
 noValueNumErrorPotential :: NumError -> CN v
-noValueNumErrorPotential e = noValue $ Set.singleton (e, ErrorPotential)
+noValueNumErrorPotential e = noValue $ NumErrors $ Set.singleton (e, ErrorPotential)
 
 prependErrorCertain :: NumError -> CN t -> CN t
-prependErrorCertain e = prependErrors $ Set.singleton (e, ErrorCertain)
+prependErrorCertain e = prependErrors $ NumErrors $ Set.singleton (e, ErrorCertain)
   
 prependErrorPotential :: NumError -> CN t -> CN t
-prependErrorPotential e = prependErrors $ Set.singleton (e, ErrorPotential)
+prependErrorPotential e = prependErrors $ NumErrors $ Set.singleton (e, ErrorPotential)
 
 liftCN  :: (a -> (CN c)) -> (CN a) -> (CN c)
 liftCN = liftCE
