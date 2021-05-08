@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7bf0425f189848e2370d0cab1f8335a5386e11e6f03271d1faafe460c97204ff
+-- hash: 5f417d9a5348a4f9b717f189c1f3f9770e6a4a4acf3d3840841fbd82f9ac2ef0
 
 name:           collect-errors
-version:        0.1.0.0
+version:        0.1.1.0
 synopsis:       Error monad with a Float instance
 description:    Please see the README on GitHub at <https://github.com/michalkonecny/collect-errors#readme>
 category:       Math

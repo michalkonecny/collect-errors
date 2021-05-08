@@ -1,8 +1,12 @@
 # Changelog for collect-errors
 
+## v0.1.1.0
+
+* Add removeValue functions
+
 ## v0.1.0.0
 
-* Initial port of CollectErrors and CN from mixed-types-num-0.4.2
+* Initial port of CollectErrors and CN from mixed-types-num-0.4.1
 
 * Simplify the code by abandoning EnsureCE and related type functions and utilities
 
