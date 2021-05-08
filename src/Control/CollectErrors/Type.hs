@@ -64,6 +64,11 @@ instance (Show v, CanBeErrors es) => (Show (CollectErrors es v)) where
 noValue :: es -> CollectErrors es v
 noValue es = CollectErrors Nothing es
 
+{-| Take a CE-value, add new errors into it and remove the value, if any -}
+removeValue :: Monoid es => CollectErrors es v -> es -> CollectErrors es v
+removeValue (CollectErrors _ es1) es2 =
+  CollectErrors Nothing (es1 <> es2)
+
 prependErrors :: (Monoid es) => es -> CollectErrors es v -> CollectErrors es v
 prependErrors es1 (CollectErrors mv es2) = CollectErrors mv (es1 <> es2)
 

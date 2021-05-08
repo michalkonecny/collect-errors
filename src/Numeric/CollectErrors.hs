@@ -4,11 +4,12 @@ module Numeric.CollectErrors
   NumError(..), ErrorCertaintyLevel(..), NumErrors, CN, cn, unCN, (~!)
   -- * Utilities
 , noValueNumErrorCertain, noValueNumErrorPotential
+, removeValueErrorCertain, removeValueErrorPotential
+, prependErrorCertain, prependErrorPotential
   -- ** Applicable general collect-error utilities
 , noValue
+, removeValue
 , prependErrors
-, prependErrorCertain
-, prependErrorPotential
 , CanTestErrorsCertain(..)
 , CanTestErrorsPresent(..)
 , toEither

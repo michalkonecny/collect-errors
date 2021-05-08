@@ -7,6 +7,7 @@ module Control.CollectErrors
 , CanTestErrorsPresent(..)
 -- ** Utilities
 , noValue
+, removeValue
 , prependErrors
 , unCollectErrors
 , (~!)

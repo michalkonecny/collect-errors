@@ -9,7 +9,7 @@ import qualified Data.List as List
 import qualified Data.Set as Set
 
 import Control.CollectErrors
-    ( CanTestErrorsCertain(..), CollectErrors, noValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors, CanTestErrorsPresent )
+    ( CanTestErrorsCertain(..), CollectErrors, noValue, removeValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors, CanTestErrorsPresent  )
 
 cn :: v -> CN v
 cn = pure
@@ -56,6 +56,14 @@ noValueNumErrorCertain e = noValue $ NumErrors $ Set.singleton (e, ErrorCertain)
 {-| Construct an empty wrapper indicating that given error may have occurred. -}
 noValueNumErrorPotential :: NumError -> CN v
 noValueNumErrorPotential e = noValue $ NumErrors $ Set.singleton (e, ErrorPotential)
+
+removeValueErrorCertain :: CN t -> NumError -> CN t
+removeValueErrorCertain v e = 
+  removeValue v $ NumErrors $ Set.singleton (e, ErrorCertain)
+
+removeValueErrorPotential :: CN t -> NumError -> CN t
+removeValueErrorPotential v e = 
+  removeValue v $ NumErrors $ Set.singleton (e, ErrorPotential)
 
 prependErrorCertain :: NumError -> CN t -> CN t
 prependErrorCertain e = prependErrors $ NumErrors $ Set.singleton (e, ErrorCertain)
