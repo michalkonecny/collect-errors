@@ -1,5 +1,9 @@
 # Changelog for collect-errors
 
+## v0.1.3.0
+
+* Add CanTakeCNErrors type shortcut
+
 ## v0.1.2.0
 
 * Add CanTakeErrors type class and liftTakeErrors function
