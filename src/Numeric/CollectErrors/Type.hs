@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE ConstraintKinds #-}
 module Numeric.CollectErrors.Type 
 
 where
@@ -13,7 +14,7 @@ import qualified Data.List as List
 import qualified Data.Set as Set
 
 import Control.CollectErrors
-    ( CanTestErrorsCertain(..), CollectErrors, noValue, removeValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors, CanTestErrorsPresent  )
+    ( CanTestErrorsCertain(..), CollectErrors, noValue, removeValue, prependErrors, liftCE, lift2CE, lift1TCE, liftT1CE, unCollectErrors, CanTestErrorsPresent, CanTakeErrors  )
 
 cn :: v -> CN v
 cn = pure
@@ -89,3 +90,5 @@ lift1TCN  :: (a -> b -> (CN c)) -> (CN a) -> b -> (CN c)
 lift1TCN = lift1TCE
 liftT1CN  :: (a -> b -> (CN c)) -> a -> (CN b) -> (CN c)
 liftT1CN = liftT1CE
+
+type CanTakeCNErrors = CanTakeErrors NumErrors
