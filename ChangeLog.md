@@ -1,5 +1,11 @@
 # Changelog for collect-errors
 
+## v0.1.2.0
+
+* Add CanTakeErrors type class and liftTakeErrors function
+
+* Add instance of deepseq's NFData
+
 ## v0.1.1.0
 
 * Add removeValue functions
