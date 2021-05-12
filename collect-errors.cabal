@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5f417d9a5348a4f9b717f189c1f3f9770e6a4a4acf3d3840841fbd82f9ac2ef0
+-- hash: 9719ab4b60e6ad290d8ad28d13e0ec23e5c1f52dec6ff91d565ad3ea43e6764b
 
 name:           collect-errors
 version:        0.1.1.0
@@ -44,4 +44,5 @@ library
       QuickCheck >=2.7
     , base >=4.7 && <5
     , containers
+    , deepseq
   default-language: Haskell2010

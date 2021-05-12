@@ -1,9 +1,13 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveGeneric #-}
 module Numeric.CollectErrors.Type 
 
 where
+
+import GHC.Generics
+import Control.DeepSeq
 
 import qualified Data.List as List
 import qualified Data.Set as Set
@@ -19,7 +23,7 @@ unCN = unCollectErrors
 
 type CN = CollectErrors NumErrors
 newtype NumErrors = NumErrors (Set.Set NumErrorLevel)
-  deriving (Eq,Semigroup, Monoid, CanTestErrorsCertain, CanTestErrorsPresent)
+  deriving (Eq, Semigroup, Monoid, CanTestErrorsCertain, CanTestErrorsPresent, Generic, NFData)
 type NumErrorLevel = (NumError, ErrorCertaintyLevel)
 
 instance Show NumErrors where
@@ -31,7 +35,9 @@ instance Show NumErrors where
 
 data NumError =
     DivByZero | OutOfDomain String | NumError String
-    deriving (Eq, Ord)
+    deriving (Eq, Ord, Generic)
+
+instance NFData NumError
 
 instance Show NumError where
   show DivByZero = "division by 0"
@@ -40,7 +46,9 @@ instance Show NumError where
 
 data ErrorCertaintyLevel =
   ErrorCertain | ErrorPotential
-  deriving (Eq, Ord)
+  deriving (Eq, Ord, Generic)
+
+instance NFData ErrorCertaintyLevel
 
 instance Show ErrorCertaintyLevel where
   show ErrorCertain = "ERROR"

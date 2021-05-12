@@ -1,9 +1,14 @@
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveAnyClass #-}
 module Control.CollectErrors.Type where
 
 import Prelude
 
 import Control.Applicative ( Applicative(liftA2), liftA )
+
+import GHC.Generics
+import Control.DeepSeq
 
 import qualified Data.Set as Set
 
@@ -27,6 +32,7 @@ data CollectErrors es v =
   CollectErrors
     { getMaybeValue :: Maybe v
     , getErrors :: es }
+  deriving (Generic, Generic1, NFData, NFData1)
 
 class CanTestErrorsCertain es where
   hasCertainError :: es -> Bool
