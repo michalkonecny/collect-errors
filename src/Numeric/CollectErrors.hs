@@ -27,6 +27,8 @@ module Numeric.CollectErrors
 , lift2pair
 , lift1Tpair
 , liftT1pair
+, CanTakeErrors(..)
+, liftTakeErrors
 )
 where
 

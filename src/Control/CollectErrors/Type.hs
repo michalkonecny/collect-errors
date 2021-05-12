@@ -1,6 +1,8 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FlexibleInstances #-}
 module Control.CollectErrors.Type where
 
 import Prelude
@@ -131,6 +133,20 @@ instance (Monoid es) => Applicative (CollectErrors es) where
   (CollectErrors _ ae) <*> (CollectErrors _ be) =
     CollectErrors Nothing (ae <> be)
 
+instance (Monoid es) => Monad (CollectErrors es) where
+  ae >>= f =
+    case ae of
+      CollectErrors (Just a) es1 ->
+        let (CollectErrors mv es2) = f a in
+          CollectErrors mv (es1 <> es2)
+      CollectErrors _ es ->
+        CollectErrors Nothing es
+
+instance (Arbitrary t, Monoid es) => Arbitrary (CollectErrors es t) where
+  arbitrary = (\v -> CollectErrors (Just v) mempty) <$> arbitrary
+
+-- Various lifts:
+
 lift :: (Monoid es) => (a -> b) -> (CollectErrors es a) -> (CollectErrors es b)
 lift = liftA
 
@@ -200,15 +216,21 @@ liftT1pair f a (CollectErrors (Just b) be) =
 liftT1pair _ _ (CollectErrors _ be) = 
   (CollectErrors Nothing be, CollectErrors Nothing be)
 
-instance (Monoid es) => Monad (CollectErrors es) where
-  ae >>= f =
-    case ae of
-      CollectErrors (Just a) es1 ->
-        let (CollectErrors mv es2) = f a in
-          CollectErrors mv (es1 <> es2)
-      CollectErrors _ es ->
-        CollectErrors Nothing es
+liftTakeErrors :: (CanTakeErrors es t2) => (t1 -> t2) -> (CollectErrors es t1 -> t2)
+liftTakeErrors f (CollectErrors (Just v) e) = 
+  takeErrors e $ f v
+liftTakeErrors _f (CollectErrors _ e) = 
+  takeErrorsNoValue e
 
-instance (Arbitrary t, Monoid es) => Arbitrary (CollectErrors es t) where
-  arbitrary = (\v -> CollectErrors (Just v) mempty) <$> arbitrary
+class CanTakeErrors es t where
+  takeErrors :: es -> t -> t
+  takeErrorsNoValue :: es -> t
 
+instance (Monoid es) => CanTakeErrors es (CollectErrors es t) where
+  takeErrors es1 (CollectErrors v es2) = CollectErrors v (es1 <> es2)
+  takeErrorsNoValue es = CollectErrors Nothing es
+
+instance (CanTakeErrors es t1, CanTakeErrors es t2) => CanTakeErrors es (t1,t2) where
+  takeErrors es (v1,v2) = (takeErrors es v1, takeErrors es v2)
+  takeErrorsNoValue es = (takeErrorsNoValue es, takeErrorsNoValue es)
+  
