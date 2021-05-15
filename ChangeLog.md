@@ -1,5 +1,9 @@
 # Changelog for collect-errors
 
+## v0.1.4.0
+
+* Add clearPotentialErrors
+
 ## v0.1.3.0
 
 * Add CanTakeCNErrors type shortcut
