@@ -1,5 +1,6 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -Wno-orphans #-}
 module Numeric.CollectErrors.PreludeInstances where
 
 import Prelude
@@ -48,7 +49,7 @@ liftAcheck ::
   (a -> Bool) -> 
   (a -> NumError) -> 
   (a -> v) -> CN a -> CN v
-liftAcheck check err op aCN@(CollectErrors (Just a) _)
+liftAcheck check err _op (CollectErrors (Just a) _)
   | check a = noValueNumErrorCertain (err a)
 liftAcheck _ _ op aCN = lift op aCN
 
@@ -69,6 +70,6 @@ liftA2checkB ::
   (b -> NumError) -> 
   (a -> b -> v) -> 
   CN a -> CN b -> CN v
-liftA2checkB checkB errB op a bCN@(CollectErrors (Just b) _)
+liftA2checkB checkB errB _op _a (CollectErrors (Just b) _)
   | checkB b = noValueNumErrorCertain (errB b)
 liftA2checkB _ _ op a bCN = lift2 op a bCN

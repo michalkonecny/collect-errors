@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
 module Control.CollectErrors.PreludeInstances where
 
 import Prelude
@@ -54,11 +55,11 @@ errorMissingValues label ess =
 liftGotValue :: (CanBeErrors es) => String -> (t1 -> t) -> CollectErrors es t1 -> t
 liftGotValue _ op (CollectErrors (Just v1) _) = 
   op v1
-liftGotValue label op (CollectErrors _ es1) = 
+liftGotValue label _op (CollectErrors _ es1) = 
   errorMissingValue label es1
 
 liftGotValues2 :: (CanBeErrors es) => String -> (t1 -> t2 -> t) -> CollectErrors es t1 -> CollectErrors es t2 -> t
 liftGotValues2 _ op (CollectErrors (Just v1) _) (CollectErrors (Just v2) _) = 
   op v1 v2
-liftGotValues2 label op (CollectErrors _ es1) (CollectErrors _ es2) = 
+liftGotValues2 label _op (CollectErrors _ es1) (CollectErrors _ es2) = 
   errorMissingValues label [es1, es2]
