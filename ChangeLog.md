@@ -1,5 +1,9 @@
 # Changelog for collect-errors
 
+## v0.1.5
+
+* Make clearPotentialErrors generic, with instances for CN, pairs and lists
+
 ## v0.1.4
 
 * Add clearPotentialErrors for removing harmless errors
