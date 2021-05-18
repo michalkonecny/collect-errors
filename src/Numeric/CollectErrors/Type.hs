@@ -80,16 +80,25 @@ prependErrorCertain e = prependErrors $ NumErrors $ Set.singleton (e, ErrorCerta
 prependErrorPotential :: NumError -> CN t -> CN t
 prependErrorPotential e = prependErrors $ NumErrors $ Set.singleton (e, ErrorPotential)
 
-{-|
-  If there is a value, remove any potential errors that are associated with it.
--}
-clearPotentialErrors :: CN t -> CN t
-clearPotentialErrors (CollectErrors (Just v) (NumErrors es)) =
-  CollectErrors (Just v) (NumErrors $ Set.filter notPotential es)
-  where
-  notPotential (_, ErrorPotential) = False
-  notPotential _ = True
-clearPotentialErrors ce = ce
+class CanClearPotentialErrors cnt where
+  {-|
+    If there is a value, remove any potential errors that are associated with it.
+  -}
+  clearPotentialErrors :: cnt -> cnt
+
+instance CanClearPotentialErrors (CN t) where
+  clearPotentialErrors (CollectErrors (Just v) (NumErrors es)) =
+    CollectErrors (Just v) (NumErrors $ Set.filter notPotential es)
+    where
+    notPotential (_, ErrorPotential) = False
+    notPotential _ = True
+  clearPotentialErrors ce = ce
+
+instance (CanClearPotentialErrors t1, CanClearPotentialErrors t2) => CanClearPotentialErrors (t1,t2) where
+  clearPotentialErrors (v1,v2) = (clearPotentialErrors v1, clearPotentialErrors v2)
+
+instance (CanClearPotentialErrors t) => CanClearPotentialErrors [t] where
+  clearPotentialErrors = map clearPotentialErrors
 
 liftCN  :: (a -> (CN c)) -> (CN a) -> (CN c)
 liftCN = liftCE

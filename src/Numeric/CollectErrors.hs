@@ -6,7 +6,7 @@ module Numeric.CollectErrors
 , noValueNumErrorCertain, noValueNumErrorPotential
 , removeValueErrorCertain, removeValueErrorPotential
 , prependErrorCertain, prependErrorPotential
-, clearPotentialErrors
+, CanClearPotentialErrors(..)
 , CanTakeCNErrors
   -- ** Applicable general collect-error utilities
 , noValue
