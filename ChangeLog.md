@@ -1,5 +1,9 @@
 # Changelog for collect-errors
 
+## v0.1.6
+
+* Add utilities unCNfn1, unCNfn2
+
 ## v0.1.5
 
 * Make clearPotentialErrors generic, with instances for CN, pairs and lists
