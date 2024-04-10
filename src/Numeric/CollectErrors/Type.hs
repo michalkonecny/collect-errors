@@ -25,13 +25,22 @@ import qualified Data.List as List
 import qualified Data.Set as Set
 import GHC.Generics
 
+type CN = CollectErrors NumErrors
+
 cn :: v -> CN v
 cn = pure
 
+{-| Unsafe way to get a value out of the CN wrapper. -}
 unCN :: CN p -> p
 unCN = unCollectErrors
 
-type CN = CollectErrors NumErrors
+{-| Unsafe way to get the result of a function out of the CN wrapper. -}
+unCNfn1 :: (a -> CN p) -> a -> p
+unCNfn1 fn a = unCollectErrors (fn a)
+
+{-| Unsafe way to get the result of a binary function out of the CN wrapper. -}
+unCNfn2 :: (a -> b -> CN p) -> a -> b -> p
+unCNfn2 fn a b = unCollectErrors (fn a b)
 
 newtype NumErrors = NumErrors (Set.Set NumErrorLevel)
   deriving (Eq, Semigroup, Monoid, CanTestErrorsCertain, CanTestErrorsPresent, Generic, NFData)
